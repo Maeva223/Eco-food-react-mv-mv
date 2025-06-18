@@ -1,5 +1,5 @@
-import react from "react";
-import reactDOM from "react-dom/client";
+import React from "react";
+import ReactDOM from "react-dom/client";
 import AppRouter from "./router";
 import "bootstrap/dist/css/botstrap.min.css";
 import "@fortawesome/fontawesome-free/css-all.min.css";
