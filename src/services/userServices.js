@@ -24,3 +24,4 @@ export const saveUserData = async (uid, data) => {
         throw error;
     }
 };
+

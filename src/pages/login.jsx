@@ -14,16 +14,17 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      await setPersistence(auth, browserLocalPersistence);
-      await signInWithEmailAndPassword(auth, email, password);
-      Swal.fire("Bienvenido", "Has iniciado sesión correctamente", "success");
-      navigate("/home");
-    } catch (error) {
-      Swal.fire("Error", "Credenciales incorrectas o fallo de red", "error");
-    }
-  };
+  e.preventDefault();
+  try {
+    await setPersistence(auth, browserLocalPersistence);
+    const cred = await signInWithEmailAndPassword(auth, email, password);
+    const datos = await getUserData(cred.user.uid);
+    console.log("Bienvenido", datos.nombre, "Tipo:", datos.tipo);
+    navigate("/home");
+  } catch (error) {
+    Swal.fire("Error", "Credenciales incorrectas", "error");
+  }
+};
   return (
     <div className="container mt-5">
       <h2>Iniciar Sesión</h2>
