@@ -1,31 +1,37 @@
+import React, { useContext, useEffect, useState } from 'react';
 import CardProducto from '../components/CardProducto';
-import CerrarSesion from "../components/CerrarSesion";
-import {getUserData} from "../services/userService";
-import {useAuth} from "../context/AuthContext";
-
-useEffect(()=>{
-    const fetch = async()=>{
-        const datos = await getUserData(UserActivation.uid);
-        setUserData(datos);
-    };
-    if (user) fetch();
-},[user]);
+import CerrarSesion from '../components/CerrarSesion';
+import { getUserData } from '../services/userService';
+import { AuthContext } from '../context/AuthProvider';
 
 function Home() {
-    return (
-    <div>
-        <h2>Bienvenido a EcoFood</h2>
-        <CerrarSesion />
-    </div>
-    );
-}
+  const { user } = useContext(AuthContext);
+  const [userData, setUserData] = useState(null);
 
-function Home(){
-    return (
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user && user.uid) {
+        const datos = await getUserData(user.uid);
+        setUserData(datos);
+      }
+    };
+
+    fetchData();
+  }, [user]);
+
+  return (
     <div className="container mt-4">
-        <h1>Productos Disponibles</h1>
-        <CardProducto nombre="Pan Integral" precio="$500" />
-    </div>);
+      <h2>Bienvenido a EcoFood, {user ? user.email : 'invitado'}</h2>
+      {userData && (
+        <p>Nombre registrado: {userData.nombre}</p>
+      )}
+
+      <CerrarSesion />
+
+      <h1 className="mt-4">Productos Disponibles</h1>
+      <CardProducto nombre="Pan Integral" precio="$500" />
+    </div>
+  );
 }
 
-export default Home; 
+export default Home;

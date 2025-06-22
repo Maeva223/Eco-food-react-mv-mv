@@ -3,12 +3,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-    appId: import.meta.env.VITE_FIREBASE_APP_ID
+    apiKey: "AIzaSyCrFwEuKdZk1walAI5AIEvwNYfazIz54gU",
+    authDomain: "ecofood-app-8e771.firebaseapp.com.firebaseapp.com",
+    projectId: "ecofood-app-8e771",
+    storageBucket: "ecofood-app-8e771.firebasestorage.app",
+    messagingSenderId: "1006055374200",
+    appId: "1:1006055374200:web:10c7236b27d207e2569c8d"
 };
 
 const app = initializeApp(firebaseConfig);
