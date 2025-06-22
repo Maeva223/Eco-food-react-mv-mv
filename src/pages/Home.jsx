@@ -1,5 +1,15 @@
 import CardProducto from '../components/CardProducto';
 import CerrarSesion from "../components/CerrarSesion";
+import {getUserData} from "../services/userService";
+import {useAuth} from "../context/AuthContext";
+
+useEffect(()=>{
+    const fetch = async()=>{
+        const datos = await getUserData(UserActivation.uid);
+        setUserData(datos);
+    };
+    if (user) fetch();
+},[user]);
 
 function Home() {
     return (
