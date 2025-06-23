@@ -9,7 +9,7 @@ export default function CerrarSesion() {
         try {
             await signOut(auth);
             Swal.fire("Sesión cerrada", "Has cerrado sesión correctamente", "success");
-            navigate("/login"); // eslint-disable-next-line no-unused-vars
+            navigate("/login");
         } catch (error) {
             Swal.fire("Error", "No se pudo cerrar la sesión", "error");
         }
