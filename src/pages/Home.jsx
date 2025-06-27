@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
-import CardProducto from '../components/CardProducto';
-import CerrarSesion from '../components/CerrarSesion';
-import { getUserData } from '../services/userService';
-import { AuthContext } from '../context/AuthProvider';
+import React, { useContext, useEffect, useState } from "react";
+import CardProducto from "../components/CardProducto";
+import CerrarSesion from "../components/CerrarSesion";
+import { getUserData } from "../services/userService";
+import { AuthContext } from "../context/AuthProvider";
 
 function Home() {
   const { user } = useContext(AuthContext);
@@ -21,10 +21,8 @@ function Home() {
 
   return (
     <div className="container mt-4">
-      <h2>Bienvenido a EcoFood, {user ? user.email : 'invitado'}</h2>
-      {userData && (
-        <p>Nombre registrado: {userData.nombre}</p>
-      )}
+      <h2>Bienvenido a EcoFood, {user ? user.email : "invitado"}</h2>
+      {userData && <p>Nombre registrado: {userData.nombre}</p>}
 
       <CerrarSesion />
 
