@@ -21,6 +21,20 @@ export default function AppRouter() {
       />
       <Route path="*" element={<Navigate to="/login" />} />
       <Route path="/" element={<Navigate to="/login" />} />
+      <Route path="/cliente/dashboard" element={
+        <ProtectedByRole allowed={["cliente"]}>
+          <ClienteDashboard/>
+        </ProtectedByRole>
+      }/>
+      <Route path ="/admin" element={
+        <ProtectedByRole allowed={["admin"]}>
+          <AdminLayout/>
+        </ProtectedByRole>
+      }>
+        <Route path="dashboard" element={<AdminDashboard/>}/>
+        <Route path="productos" element={<AdminProductos/>}/>
+        <Route path="usuarios" element={<AdminUsuarios/>}/>
+      </Route>
     </Routes>
   );
 }
