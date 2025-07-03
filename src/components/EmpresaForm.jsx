@@ -11,14 +11,17 @@ export default function EmpresaForm({ onSubmit, initialData = {} }) {
   });
 
   useEffect(() => {
-    setForm({
-      nombre: initialData.nombre || "",
-      rut: initialData.rut || "",
-      direccion: initialData.direccion || "",
-      comuna: initialData.comuna || "",
-      email: initialData.email || "",
-      telefono: initialData.telefono || "",
-    });
+    // Solo actualiza el formulario si initialData tiene algún valor (modo edición)
+    if (Object.keys(initialData).length > 0) {
+      setForm({
+        nombre: initialData.nombre || "",
+        rut: initialData.rut || "",
+        direccion: initialData.direccion || "",
+        comuna: initialData.comuna || "",
+        email: initialData.email || "",
+        telefono: initialData.telefono || "",
+      });
+    }
   }, [initialData]);
 
   const handleChange = (e) => {
