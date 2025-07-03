@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   signInWithEmailAndPassword,
   setPersistence,
-  browserLocalPersistence
+  browserLocalPersistence,
 } from "firebase/auth";
 import { auth } from "../services/firebase";
 import Swal from "sweetalert2";
@@ -21,7 +21,6 @@ export default function Login() {
       await setPersistence(auth, browserLocalPersistence);
       const cred = await signInWithEmailAndPassword(auth, email, password);
 
-
       if (!cred.user.emailVerified) {
         Swal.fire(
           "Correo no verificado",
@@ -34,8 +33,12 @@ export default function Login() {
       const datos = await getUserData(cred.user.uid);
       console.log("Bienvenido", datos.nombre, "Tipo:", datos.tipo);
 
-      navigate("/home");
-
+      // Redirección según tipo de usuario
+      if (datos.tipo === "admin") {
+        navigate("/admin/empresas");
+      } else {
+        navigate("/home");
+      }
     } catch (error) {
       console.error(error);
       Swal.fire("Error", "Credenciales incorrectas", "error");
@@ -68,14 +71,15 @@ export default function Login() {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">Iniciar Sesión</button>
+        <button type="submit" className="btn btn-primary">
+          Iniciar Sesión
+        </button>
       </form>
       <p className="mt-3">
         <a href="/recuperar">¿Olvidaste tu contraseña?</a>
       </p>
       <p className="mt-3">
-        ¿No tienes cuenta?{" "}
-        <Link to="/registro">Regístrate aquí</Link>
+        ¿No tienes cuenta? <Link to="/registro">Regístrate aquí</Link>
       </p>
     </div>
   );

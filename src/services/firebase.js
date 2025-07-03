@@ -8,7 +8,7 @@ const firebaseConfig = {
   projectId: "ecofood-app-8e771",
   storageBucket: "ecofood-app-8e771.appspot.com",
   messagingSenderId: "1006055374200",
-  appId: "1:1006055374200:web:10c7236b27d207e2569c8d"
+  appId: "1:1006055374200:web:10c7236b27d207e2569c8d",
 };
 
 const app = initializeApp(firebaseConfig);
