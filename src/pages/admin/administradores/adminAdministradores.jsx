@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   getAdministradores,
   addAdministrador,
@@ -7,6 +7,7 @@ import {
 } from "../../../services/adminService";
 import Swal from "sweetalert2";
 import AdminNavbar from "../../../components/AdminNavbar"; // ✅ Importación
+import { AuthContext } from "../../../context/AuthProvider";
 
 export default function AdminAdministradores() {
   const [admins, setAdmins] = useState([]);
@@ -17,6 +18,7 @@ export default function AdminAdministradores() {
     tipo: "admin",
   });
   const [editId, setEditId] = useState(null);
+  const { user, userData } = useContext(AuthContext);
 
   const fetchAdmins = async () => {
     const data = await getAdministradores();
@@ -71,11 +73,28 @@ export default function AdminAdministradores() {
     setEditId(admin.id);
   };
 
-  const handleDelete = async (id, esAdminPrincipal) => {
+  const handleDelete = async (id, esAdminPrincipal, email) => {
+    // Si el admin es principal, no se puede eliminar
     if (esAdminPrincipal) {
       return Swal.fire(
         "Error",
         "No se puede eliminar el administrador principal.",
+        "error"
+      );
+    }
+    // Si el usuario actual no es principal y quiere eliminar a otro admin
+    if (!userData?.esAdminPrincipal && user?.email !== email) {
+      return Swal.fire(
+        "Error",
+        "Solo el administrador principal puede eliminar a otros administradores.",
+        "error"
+      );
+    }
+    // Si el usuario actual intenta eliminarse a sí mismo y es principal
+    if (userData?.esAdminPrincipal && user?.email === email) {
+      return Swal.fire(
+        "Error",
+        "El administrador principal no puede eliminarse a sí mismo.",
         "error"
       );
     }
@@ -191,7 +210,11 @@ export default function AdminAdministradores() {
                   <button
                     className="btn btn-sm btn-danger"
                     onClick={() =>
-                      handleDelete(admin.id, admin.esAdminPrincipal)
+                      handleDelete(
+                        admin.id,
+                        admin.esAdminPrincipal,
+                        admin.email
+                      )
                     }
                   >
                     Eliminar
