@@ -122,7 +122,7 @@ export default function AdminAdministradores() {
 
   return (
     <>
-      <AdminNavbar /> {/* ✅ Navbar integrado */}
+      <AdminNavbar />
       <div className="container mt-4">
         <h2>Administradores</h2>
         <form onSubmit={handleSubmit}>
@@ -132,9 +132,15 @@ export default function AdminAdministradores() {
               type="text"
               name="nombre"
               value={form.nombre}
-              onChange={handleChange}
+              onChange={(e) =>
+                setForm((prev) => ({
+                  ...prev,
+                  nombre: e.target.value.slice(0, 20),
+                }))
+              }
               className="form-control"
               required
+              maxLength={20}
             />
           </div>
           <div className="mb-3">
@@ -143,9 +149,17 @@ export default function AdminAdministradores() {
               type="email"
               name="email"
               value={form.email}
-              onChange={handleChange}
+              onChange={(e) =>
+                setForm((prev) => ({
+                  ...prev,
+                  email: e.target.value.slice(0, 40),
+                }))
+              }
               className="form-control"
               required
+              maxLength={40}
+              pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$"
+              placeholder="ejemplo@correo.com"
             />
           </div>
           <div className="mb-3 form-check">
@@ -156,6 +170,7 @@ export default function AdminAdministradores() {
               onChange={handleChange}
               className="form-check-input"
               id="adminPrincipalCheck"
+              disabled={form.esAdminPrincipal}
             />
             <label htmlFor="adminPrincipalCheck" className="form-check-label">
               Administrador Principal

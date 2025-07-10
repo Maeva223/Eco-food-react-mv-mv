@@ -5,6 +5,7 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "./firebase";
 
@@ -27,4 +28,10 @@ export const updateEmpresa = async (id, empresaData) => {
 export const deleteEmpresa = async (id) => {
   const empresaDoc = doc(db, "empresas", id);
   await deleteDoc(empresaDoc);
+};
+
+export const getEmpresaByUID = async (uid) => {
+  const empresaDoc = doc(db, "empresas", uid);
+  const snapshot = await getDoc(empresaDoc);
+  return { id: snapshot.id, ...snapshot.data() };
 };

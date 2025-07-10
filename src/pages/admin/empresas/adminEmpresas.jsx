@@ -8,10 +8,13 @@ import {
 import EmpresaForm from "../../../components/EmpresaForm";
 import AdminNavbar from "../../../components/AdminNavbar";
 import Swal from "sweetalert2";
+import ProductosEmpresa from "./ProductosEmpresa";
 
 export default function AdminEmpresas() {
   const [empresas, setEmpresas] = useState([]);
   const [editEmpresa, setEditEmpresa] = useState(null);
+  // Estado para mostrar productos de la empresa seleccionada
+  const [empresaSeleccionada, setEmpresaSeleccionada] = useState(null);
 
   const fetchEmpresas = async () => {
     const datos = await getEmpresas();
@@ -53,15 +56,8 @@ export default function AdminEmpresas() {
     }
   };
 
-  // Placeholder: Asociación de productos a empresas
-  // En el futuro, puedes reemplazar esto por una lógica real y un modal o sección para asociar productos
   const handleAsociarProductos = (empresa) => {
-    Swal.fire({
-      title: `Asociar productos a ${empresa.nombre}`,
-      text: "Aquí irá la funcionalidad para asociar productos a la empresa.",
-      icon: "info",
-      confirmButtonText: "Cerrar",
-    });
+    setEmpresaSeleccionada(empresa);
   };
 
   return (
@@ -128,7 +124,7 @@ export default function AdminEmpresas() {
                       className="btn btn-info btn-sm"
                       onClick={() => handleAsociarProductos(empresa)}
                     >
-                      Asociar Productos
+                      Ver Productos
                     </button>
                   </td>
                 </tr>
@@ -136,6 +132,21 @@ export default function AdminEmpresas() {
             </tbody>
           </table>
         </div>
+        {empresaSeleccionada && (
+          <div className="mt-4">
+            <h4>Productos de {empresaSeleccionada.nombre}</h4>
+            <ProductosEmpresa
+              empresaId={empresaSeleccionada.id}
+              onClose={() => setEmpresaSeleccionada(null)}
+            />
+            <button
+              className="btn btn-secondary mt-2"
+              onClick={() => setEmpresaSeleccionada(null)}
+            >
+              Cerrar Productos
+            </button>
+          </div>
+        )}
       </div>
     </>
   );

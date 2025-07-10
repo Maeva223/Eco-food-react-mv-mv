@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { auth } from "../services/firebase";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -19,8 +22,16 @@ export default function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    if (password.length < 6 || !/[A-Za-z]/.test(password) || !/\d/.test(password)) {
-      return Swal.fire("Contraseña débil", "Debe tener al menos 6 caracteres, incluyendo letras y números.", "warning");
+    if (
+      password.length < 6 ||
+      !/[A-Za-z]/.test(password) ||
+      !/\d/.test(password)
+    ) {
+      return Swal.fire(
+        "Contraseña débil",
+        "Debe tener al menos 6 caracteres, incluyendo letras y números.",
+        "warning"
+      );
     }
 
     try {
@@ -34,12 +45,15 @@ export default function Register() {
         comuna,
         telefono,
         tipo,
-        email
+        email,
       });
 
-      Swal.fire("¡Registro exitoso!", "Verifica tu correo electrónico antes de iniciar sesión.", "success");
+      Swal.fire(
+        "¡Registro exitoso!",
+        "Verifica tu correo electrónico antes de iniciar sesión.",
+        "success"
+      );
       navigate("/login");
-
     } catch (error) {
       console.error(error);
       Swal.fire("Error", error.message, "error");
@@ -56,8 +70,9 @@ export default function Register() {
             type="text"
             className="form-control"
             value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
+            onChange={(e) => setNombre(e.target.value.slice(0, 20))}
             required
+            maxLength={20}
           />
         </div>
 
@@ -67,8 +82,11 @@ export default function Register() {
             type="email"
             className="form-control"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value.slice(0, 40))}
             required
+            maxLength={40}
+            pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$"
+            placeholder="ejemplo@correo.com"
           />
         </div>
 
@@ -108,23 +126,29 @@ export default function Register() {
         <div className="mb-3">
           <label className="form-label">Teléfono (opcional)</label>
           <input
-            type="text"
+            type="tel"
             className="form-control"
             value={telefono}
-            onChange={(e) => setTelefono(e.target.value)}
+            onChange={(e) => {
+              let val = e.target.value.replace(/\D/g, "");
+              if (val.startsWith("569")) val = val.slice(3); // Evita duplicar el prefijo
+              if (val.length > 8) val = val.slice(0, 8);
+              setTelefono("+569" + val);
+            }}
+            pattern="\+569\d{8}"
+            minLength={12}
+            maxLength={12}
+            placeholder="+569XXXXXXXX"
           />
         </div>
         <div className="mb-3">
           <label className="form-label">Tipo de usuario</label>
-          <input
-            type="text"
-            className="form-control"
-            value={tipo}
-            disabled
-          />
+          <input type="text" className="form-control" value={tipo} disabled />
         </div>
 
-        <button type="submit" className="btn btn-success">Registrar</button>
+        <button type="submit" className="btn btn-success">
+          Registrar
+        </button>
       </form>
     </div>
   );

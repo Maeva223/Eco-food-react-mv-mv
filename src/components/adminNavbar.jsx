@@ -27,9 +27,13 @@ export default function AdminNavbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/admin">
+        <span
+          className="navbar-brand"
+          style={{ cursor: "pointer", color: "#fff", fontWeight: "bold" }}
+          onClick={() => navigate("/home")}
+        >
           Admin Panel
-        </Link>
+        </span>
         <button
           className="navbar-toggler"
           type="button"

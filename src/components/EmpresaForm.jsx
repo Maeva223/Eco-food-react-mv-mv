@@ -43,12 +43,55 @@ export default function EmpresaForm({ onSubmit, initialData = {} }) {
               {campo[0].toUpperCase() + campo.slice(1)}
             </label>
             <input
-              type="text"
+              type={
+                campo === "telefono"
+                  ? "tel"
+                  : campo === "email"
+                  ? "email"
+                  : "text"
+              }
               name={campo}
               className="form-control"
               value={form[campo]}
-              onChange={handleChange}
+              onChange={
+                campo === "telefono"
+                  ? (e) => {
+                      let val = e.target.value.replace(/\D/g, "");
+                      if (val.startsWith("569")) val = val.slice(3); // Evita duplicar el prefijo
+                      if (val.length > 8) val = val.slice(0, 8);
+                      setForm({
+                        ...form,
+                        telefono: "+569" + val,
+                      });
+                    }
+                  : handleChange
+              }
               required={campo !== "telefono"}
+              pattern={
+                campo === "telefono"
+                  ? "\\+569\\d{8}"
+                  : campo === "email"
+                  ? "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+                  : undefined
+              }
+              minLength={campo === "telefono" ? 12 : undefined}
+              maxLength={
+                campo === "telefono"
+                  ? 12
+                  : campo === "nombre"
+                  ? 20
+                  : campo === "email"
+                  ? 40
+                  : undefined
+              }
+              placeholder={
+                campo === "telefono"
+                  ? "+569XXXXXXXX"
+                  : campo === "email"
+                  ? "ejemplo@correo.com"
+                  : undefined
+              }
+              readOnly={campo === "telefono" ? false : undefined}
             />
           </div>
         )
